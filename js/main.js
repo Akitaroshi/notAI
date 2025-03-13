@@ -332,6 +332,34 @@ function handleTransferForm(e) {
         return;
     }
     
+    const walletBalances = {
+        metamask: {
+            btc: 0.05000000,
+            eth: 1.20000000
+        },
+        tonkeeper: {
+            btc: 0.03000000,
+            eth: 0.80000000
+        }
+    };
+
+    if (crypto === 'btc') {
+        walletBalances[sourceWallet].btc += amount;
+    } else {
+        walletBalances[sourceWallet].eth += amount;
+    }
+
+    let totalBtc = 0;
+    let totalEth = 0;
+
+    Object.values(walletBalances).forEach(wallet => {
+        totalBtc += wallet.btc;
+        totalEth += wallet.eth;
+    });
+
+    document.getElementById('btc-balance').textContent = `Баланс: ${totalBtc.toFixed(8)} BTC`;
+    document.getElementById('eth-balance').textContent = `Баланс: ${totalEth.toFixed(8)} ETH`;
+    
     showNotification(
         'Успешно',
         `Перевод ${amount} ${crypto.toUpperCase()} с кошелька ${sourceWallet} выполнен!`
