@@ -1,0 +1,82 @@
+.crypto-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    margin-bottom: 32px;
+}
+
+.card {
+    background: var(--bg-card);
+    padding: 32px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card h2 {
+    font-size: 21px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.price {
+    font-size: 29px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 13px 0;
+    text-shadow: 0 0 10px rgba(33, 150, 243, 0.2);
+}
+
+.price-change {
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+.balance-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    gap: 16px;
+}
+
+.balance {
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+.transfer-btn {
+    background: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    padding: 10px 19px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.transfer-btn::after {
+    content: '→';
+    font-size: 18px;
+    transition: transform 0.2s ease;
+}
+
+.transfer-btn:hover {
+    background: var(--hover-color);
+    transform: translateY(-2px);
+}
+
+.transfer-btn:hover::after {
+    transform: translateX(3px);
+} 

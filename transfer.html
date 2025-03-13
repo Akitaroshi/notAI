@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Перевод криптовалюты</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a0a1a 0%, #16213e 50%, #0a0a1a 100%);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .transfer-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 20px;
+        }
+
+        h1 {
+            color: #00ff88;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #00ff88;
+            font-size: 1.1em;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .balance-display {
+            color: #00ff88;
+            font-size: 1.1em;
+            margin-top: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .transfer-btn {
+            background: linear-gradient(45deg, #00ff88, #00b4d8);
+            color: #0a0a1a;
+        }
+
+        .cancel-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Вернуться на главную</a>
+        
+        <div class="transfer-card">
+            <h1>Перевод криптовалюты</h1>
+            
+            <form id="transfer-form">
+                <div class="form-group">
+                    <label>Выберите кошелек отправителя</label>
+                    <select id="source-wallet" required>
+                        <option value="">Выберите кошелек</option>
+                        <option value="metamask">MetaMask</option>
+                        <option value="tonkeeper">TonKeeper</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Выберите криптовалюту</label>
+                    <select id="crypto-select" required>
+                        <option value="">Выберите криптовалюту</option>
+                        <option value="btc">Bitcoin (BTC)</option>
+                        <option value="eth">Ethereum (ETH)</option>
+                    </select>
+                    <div id="balance-display" class="balance-display">Доступный баланс: 0.00000000</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Сумма перевода</label>
+                    <input type="number" id="amount" step="0.00000001" min="0" required placeholder="0.00000000">
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="cancel-btn" onclick="window.location.href='index.html'">Отмена</button>
+                    <button type="submit" class="transfer-btn">Перевести</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Имитация балансов кошельков
+        const walletBalances = {
+            metamask: {
+                btc: 0.05000000,
+                eth: 1.20000000
+            },
+            tonkeeper: {
+                btc: 0.03000000,
+                eth: 0.80000000
+            }
+        };
+
+        // Обновление отображения баланса при выборе кошелька и криптовалюты
+        function updateBalanceDisplay() {
+            const sourceWallet = document.getElementById('source-wallet').value;
+            const crypto = document.getElementById('crypto-select').value;
+            const balanceDisplay = document.getElementById('balance-display');
+            
+            if (sourceWallet && crypto) {
+                const balance = walletBalances[sourceWallet][crypto];
+                balanceDisplay.textContent = `Доступный баланс: ${balance.toFixed(8)} ${crypto.toUpperCase()}`;
+            } else {
+                balanceDisplay.textContent = 'Доступный баланс: 0.00000000';
+            }
+        }
+
+        // Обработка отправки формы
+        document.getElementById('transfer-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const sourceWallet = document.getElementById('source-wallet').value;
+            const crypto = document.getElementById('crypto-select').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            
+            if (amount > walletBalances[sourceWallet][crypto]) {
+                alert('Недостаточно средств для перевода');
+                return;
+            }
+
+            // Здесь будет логика перевода
+            alert('Перевод успешно выполнен!');
+            window.location.href = 'index.html';
+        });
+
+        // Добавляем слушатели событий для обновления баланса
+        document.getElementById('source-wallet').addEventListener('change', updateBalanceDisplay);
+        document.getElementById('crypto-select').addEventListener('change', updateBalanceDisplay);
+    </script>
+</body>
+</html> 
