@@ -279,6 +279,39 @@ function updateBalances() {
     document.getElementById('eth-balance').textContent = `Баланс: ${totalEth.toFixed(8)} ETH`;
 }
 
+// Функция для показа уведомлений
+function showNotification(title, message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <div class="notification-title">${title}</div>
+            <div class="notification-message">${message}</div>
+        </div>
+        <div class="notification-close">×</div>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Показываем уведомление
+    setTimeout(() => notification.classList.add('show'), 100);
+
+    // Обработчик закрытия
+    const closeBtn = notification.querySelector('.notification-close');
+    closeBtn.addEventListener('click', () => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    });
+
+    // Автоматическое закрытие через 5 секунд
+    setTimeout(() => {
+        if (notification.classList.contains('show')) {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 5000);
+}
+
 // Обработчик формы перевода
 function handleTransferForm(e) {
     e.preventDefault();
@@ -290,48 +323,28 @@ function handleTransferForm(e) {
     const maxAmount = crypto === 'btc' ? 100 : 1000;
     
     if (amount > maxAmount) {
-        alert(`Максимальная сумма для перевода: ${maxAmount} ${crypto.toUpperCase()}`);
+        showNotification(
+            'Ошибка',
+            `Максимальная сумма для перевода: ${maxAmount} ${crypto.toUpperCase()}`,
+            'error'
+        );
         return;
     }
     
-    alert(`Перевод ${amount} ${crypto.toUpperCase()} с кошелька ${sourceWallet} успешно выполнен!`);
+    showNotification(
+        'Успешно',
+        `Перевод ${amount} ${crypto.toUpperCase()} с кошелька ${sourceWallet} выполнен!`
+    );
     e.target.reset();
-}
-
-// Функция для обновления баланса в форме перевода
-function updateTransferBalance() {
-    const wallet = document.getElementById('source-wallet').value;
-    const crypto = document.getElementById('crypto-select').value;
-    const balanceDisplay = document.getElementById('balance-display');
-    
-    if (wallet && crypto) {
-        const walletBalances = {
-            metamask: {
-                btc: 0.05000000,
-                eth: 1.20000000
-            },
-            tonkeeper: {
-                btc: 0.03000000,
-                eth: 0.80000000
-            }
-        };
-        
-        const balance = walletBalances[wallet][crypto];
-        balanceDisplay.textContent = `Доступный баланс: ${balance.toFixed(8)} ${crypto.toUpperCase()}`;
-        balanceDisplay.classList.add('visible');
-    }
 }
 
 // Инициализация после загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
     initializeCharts();
     updateBalances();
-    updateTransferBalance();
 
     // Добавляем обработчики событий
     document.getElementById('transfer-form').addEventListener('submit', handleTransferForm);
-    document.getElementById('source-wallet').addEventListener('change', updateTransferBalance);
-    document.getElementById('crypto-select').addEventListener('change', updateTransferBalance);
 
     // Навигация между секциями
     document.querySelectorAll('.nav-link').forEach(link => {

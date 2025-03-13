@@ -1,0 +1,10 @@
+@import '_reset.css';
+@import 'variables.css';
+@import 'main.css';
+@import 'nav.css';
+@import 'cards.css';
+@import 'charts.css';
+@import 'form.css';
+@import 'about.css';
+@import 'wallet.css';
+@import 'notifications.css'; 

@@ -1,18 +1,21 @@
 .transfer-card {
-    background: var(--bg-card);
+    background: var(--gradient-card);
     padding: 40px;
     border-radius: 20px;
     backdrop-filter: blur(20px);
     box-shadow: var(--card-shadow);
     max-width: 500px;
     margin: 0 auto;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .transfer-card h1 {
     margin: 0 0 32px;
-    font-size: 32px;
+    font-size: var(--font-size-xl);
     color: var(--accent-color);
     text-align: center;
+    font-weight: 600;
 }
 
 .form-group {
@@ -23,7 +26,7 @@
     display: block;
     margin-bottom: 13px;
     color: var(--text-secondary);
-    font-size: 18px;
+    font-size: var(--font-size-md);
     font-weight: 500;
 }
 
@@ -35,8 +38,9 @@
     border-radius: 12px;
     background: rgba(18, 18, 18, 0.8);
     color: var(--text-primary);
-    font-size: 18px;
+    font-size: var(--font-size-md);
     transition: all 0.3s ease;
+    font-family: var(--font-primary);
 }
 
 .form-group select {
@@ -68,19 +72,6 @@
     box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
 }
 
-.balance-display {
-    margin-top: 13px;
-    color: var(--accent-color);
-    font-size: 18px;
-    font-weight: 500;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.balance-display.visible {
-    opacity: 1;
-}
-
 .button-group {
     display: flex;
     gap: 24px;
@@ -90,11 +81,12 @@
 .button-group button {
     flex: 1;
     padding: 16px;
-    font-size: 18px;
+    font-size: var(--font-size-md);
     font-weight: 500;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-family: var(--font-primary);
 }
 
 .transfer-btn {
@@ -116,4 +108,43 @@
 
 .cancel-btn:hover {
     background: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 768px) {
+    .transfer-card {
+        padding: 24px;
+        margin: 0 16px;
+    }
+
+    .transfer-card h1 {
+        font-size: var(--font-size-lg);
+        margin-bottom: 24px;
+    }
+
+    .form-group label {
+        font-size: var(--font-size-sm);
+    }
+
+    .form-group select,
+    .form-group input {
+        font-size: var(--font-size-sm);
+        padding: 12px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 32px;
+    }
+
+    .button-group button {
+        width: 100%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .transfer-card {
+        max-width: 600px;
+        padding: 32px;
+    }
 }
