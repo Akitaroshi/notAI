@@ -291,7 +291,8 @@ function showNotification(title, message, type = 'success') {
         <div class="notification-close">×</div>
     `;
 
-    document.body.appendChild(notification);
+    const container = document.getElementById('notifications-container');
+    container.appendChild(notification);
 
     // Показываем уведомление
     setTimeout(() => notification.classList.add('show'), 100);
