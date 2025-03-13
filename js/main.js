@@ -372,6 +372,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // Добавляем обработчики событий
     document.getElementById('transfer-form').addEventListener('submit', handleTransferForm);
 
+    // Обработка кастомного выпадающего меню
+    document.querySelectorAll('.select-wrapper').forEach(wrapper => {
+        const select = wrapper.querySelector('select');
+        const options = wrapper.querySelectorAll('.select-option');
+
+        wrapper.addEventListener('click', (e) => {
+            if (!e.target.closest('.select-option')) {
+                wrapper.classList.toggle('active');
+            }
+        });
+
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.dataset.value;
+                select.value = value;
+                select.dispatchEvent(new Event('change'));
+                wrapper.classList.remove('active');
+            });
+        });
+    });
+
+    // Закрытие выпадающего меню при клике вне его
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.select-wrapper')) {
+            document.querySelectorAll('.select-wrapper').forEach(wrapper => {
+                wrapper.classList.remove('active');
+            });
+        }
+    });
+
     // Навигация между секциями
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', (e) => {

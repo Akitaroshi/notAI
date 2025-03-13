@@ -58,6 +58,7 @@
     background-size: 19px;
     padding-right: 48px;
     cursor: pointer;
+    pointer-events: none;
 }
 
 .form-group select:focus {
@@ -82,10 +83,21 @@
     z-index: 100;
 }
 
-.form-group select:focus + .select-options {
+.form-group .select-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+.form-group .select-wrapper.active .select-options {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+}
+
+.form-group .select-wrapper.active select {
+    border-radius: 12px 12px 0 0;
+    border-color: var(--accent-color);
+    background: rgba(33, 150, 243, 0.15);
 }
 
 .form-group .select-option {

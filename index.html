@@ -94,25 +94,29 @@
                 <form id="transfer-form">
                     <div class="form-group">
                         <label>Кошелек отправителя</label>
-                        <select id="source-wallet" required>
-                            <option value="metamask">MetaMask</option>
-                            <option value="tonkeeper">TonKeeper</option>
-                        </select>
-                        <div class="select-options">
-                            <div class="select-option" data-value="metamask">MetaMask</div>
-                            <div class="select-option" data-value="tonkeeper">TonKeeper</div>
+                        <div class="select-wrapper">
+                            <select id="source-wallet" required>
+                                <option value="metamask">MetaMask</option>
+                                <option value="tonkeeper">TonKeeper</option>
+                            </select>
+                            <div class="select-options">
+                                <div class="select-option" data-value="metamask">MetaMask</div>
+                                <div class="select-option" data-value="tonkeeper">TonKeeper</div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Криптовалюта</label>
-                        <select id="crypto-select" required>
-                            <option value="btc">Bitcoin (BTC)</option>
-                            <option value="eth">Ethereum (ETH)</option>
-                        </select>
-                        <div class="select-options">
-                            <div class="select-option" data-value="btc">Bitcoin (BTC)</div>
-                            <div class="select-option" data-value="eth">Ethereum (ETH)</div>
+                        <div class="select-wrapper">
+                            <select id="crypto-select" required>
+                                <option value="btc">Bitcoin (BTC)</option>
+                                <option value="eth">Ethereum (ETH)</option>
+                            </select>
+                            <div class="select-options">
+                                <div class="select-option" data-value="btc">Bitcoin (BTC)</div>
+                                <div class="select-option" data-value="eth">Ethereum (ETH)</div>
+                            </div>
                         </div>
                     </div>
 
