@@ -58,11 +58,26 @@
     background-size: 19px;
     padding-right: 48px;
     cursor: pointer;
-    pointer-events: none;
 }
 
-.form-group select:focus {
-    border-radius: 12px 12px 0 0;
+.form-group select option {
+    background: rgba(18, 18, 18, 0.95);
+    color: var(--text-primary);
+    padding: 16px;
+}
+
+.form-group select:hover,
+.form-group input:hover {
+    border-color: var(--accent-color);
+    background: rgba(33, 150, 243, 0.1);
+}
+
+.form-group select:focus,
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background: rgba(33, 150, 243, 0.15);
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
 }
 
 .form-group .select-options {
@@ -112,46 +127,6 @@
 
 .form-group .select-option:last-child {
     border-radius: 0 0 10px 10px;
-}
-
-.form-group select option {
-    background: rgba(18, 18, 18, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: var(--text-primary);
-    padding: 16px;
-    font-size: var(--font-size-md);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    margin: 4px;
-    transition: all 0.3s ease;
-}
-
-.form-group select option:hover {
-    background: rgba(33, 150, 243, 0.1);
-    border-color: var(--accent-color);
-}
-
-.form-group select option:checked {
-    background: rgba(33, 150, 243, 0.2);
-    color: var(--accent-color);
-    font-weight: 500;
-}
-
-.form-group select:focus option:checked {
-    background: rgba(33, 150, 243, 0.3);
-}
-
-.form-group select:focus option:hover {
-    background: rgba(33, 150, 243, 0.2);
-}
-
-.form-group select:focus,
-.form-group input:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    background: rgba(33, 150, 243, 0.15);
-    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
 }
 
 .button-group {
