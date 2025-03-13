@@ -285,7 +285,7 @@ function showNotification(title, message, type = 'success') {
     notification.className = `notification ${type}`;
     notification.innerHTML = `
         <div class="notification-content">
-            <div class="notification-title">всплывашка</div>
+            <div class="notification-title">${title}</div>
             <div class="notification-message">${message}</div>
         </div>
         <div class="notification-close">×</div>
