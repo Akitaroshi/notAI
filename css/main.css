@@ -1,11 +1,11 @@
 :root {
     --bg-dark: #121212;
-    --bg-card: rgba(255, 255, 255, 0.05);
+    --bg-card: rgba(255, 255, 255, 0.03);
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.7);
     --accent-color: #2196f3;
     --hover-color: #1976d2;
-    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --card-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 body {
@@ -15,12 +15,14 @@ body {
     background: var(--bg-dark);
     color: var(--text-primary);
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
     max-width: 1200px;
-    margin: 80px auto 0;
-    padding: 32px;
+    margin: 64px auto 0;
+    padding: 24px 16px;
 }
 
 .section {
@@ -36,6 +38,14 @@ body {
 
 @media (max-width: 768px) {
     .container {
-        padding: 16px;
+        margin-top: 56px;
+        padding: 16px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        margin-top: 72px;
+        padding: 12px 8px;
     }
 }
