@@ -285,7 +285,7 @@ function showNotification(title, message, type = 'success') {
     notification.className = `notification ${type}`;
     notification.innerHTML = `
         <div class="notification-content">
-            <div class="notification-title">${title}</div>
+            <div class="notification-title">всплывашка</div>
             <div class="notification-message">${message}</div>
         </div>
         <div class="notification-close">×</div>
@@ -294,17 +294,14 @@ function showNotification(title, message, type = 'success') {
     const container = document.getElementById('notifications-container');
     container.appendChild(notification);
 
-    // Показываем уведомление
     setTimeout(() => notification.classList.add('show'), 100);
 
-    // Обработчик закрытия
     const closeBtn = notification.querySelector('.notification-close');
     closeBtn.addEventListener('click', () => {
         notification.classList.remove('show');
         setTimeout(() => notification.remove(), 300);
     });
 
-    // Автоматическое закрытие через 5 секунд
     setTimeout(() => {
         if (notification.classList.contains('show')) {
             notification.classList.remove('show');

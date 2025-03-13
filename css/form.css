@@ -50,18 +50,41 @@
     background-position: right 16px center;
     background-size: 19px;
     padding-right: 48px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
 }
 
 .form-group select option {
-    background: #1a1a1a;
+    background: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: var(--text-primary);
     padding: 16px;
+    font-size: var(--font-size-md);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin: 4px;
+    transition: all 0.3s ease;
 }
 
-.form-group select:hover,
-.form-group input:hover {
-    border-color: var(--accent-color);
+.form-group select option:hover {
     background: rgba(33, 150, 243, 0.1);
+    border-color: var(--accent-color);
+}
+
+.form-group select option:checked {
+    background: rgba(33, 150, 243, 0.2);
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.form-group select:focus option:checked {
+    background: rgba(33, 150, 243, 0.3);
+}
+
+.form-group select:focus option:hover {
+    background: rgba(33, 150, 243, 0.2);
 }
 
 .form-group select:focus,
