@@ -13,8 +13,8 @@
             <a href="#" class="logo">CryptoHandler</a>
             <div class="nav-links">
                 <a href="#main" class="nav-link active" data-section="main">Главная</a>
-                <a href="#charts" class="nav-link" data-section="charts">Графики</a>
-                <a href="#transfer" class="nav-link" data-section="transfer">Перевод</a>
+                <a href="#cards" class="nav-link" data-section="cards">Ваши карты</a>
+                <a href="#transfer" class="nav-link" data-section="transfer">Купить крипту</a>
                 <a href="#about" class="nav-link" data-section="about">О нас</a>
             </div>
         </div>
@@ -24,64 +24,38 @@
         <section id="main" class="section active">
             <div class="wallet-section">
                 <h2>CryptoHandler</h2>
-                <p style="text-align: center; margin-bottom: 20px; font-size: 19px;">Здесь хранятся валюты от всех подключенных вами кошельков</p>
+                <p style="text-align: center; margin-bottom: 20px; font-size: 19px;">Покупайте криптовалюту напрямую с банковской карты</p>
                 
-                <div class="wallet-grid">
-                    <div class="wallet-card">
-                        <img src="https://atomicwallet.io/images/logo.svg" alt="Atomic">
-                        <p>Atomic Wallet</p>
-                        <button class="connect-btn">Подключить</button>
+                <div class="crypto-cards">
+                    <div class="card">
+                        <h2>Bitcoin (BTC)</h2>
+                        <div id="btc-price" class="price">Загрузка...</div>
+                        <p id="btc-change" class="price-change">Изменение за 24ч: ...</p>
+                        <button class="transfer-btn" onclick="document.querySelector('[data-section=transfer]').click()">Купить BTC</button>
                     </div>
-                    
-                    <div class="wallet-card">
-                        <img src="https://tonkeeper.com/favicon.ico" alt="TonKeeper">
-                        <p>TonKeeper</p>
-                        <small>Подключен</small>
+                    <div class="card">
+                        <h2>Ethereum (ETH)</h2>
+                        <div id="eth-price" class="price">Загрузка...</div>
+                        <p id="eth-change" class="price-change">Изменение за 24ч: ...</p>
+                        <button class="transfer-btn" onclick="document.querySelector('[data-section=transfer]').click()">Купить ETH</button>
                     </div>
-                    
-                    <div class="wallet-card">
-                        <img src="https://metamask.io/favicon.ico" alt="MetaMask">
-                        <p>MetaMask</p>
-                        <small>Подключен</small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="crypto-cards">
-                <div class="card">
-                    <h2>Bitcoin (BTC)</h2>
-                    <div id="btc-price" class="price">Загрузка...</div>
-                    <p id="btc-change" class="price-change">Изменение за 24ч: ...</p>
-                    <div class="balance-info">
-                        <div class="balance" id="btc-balance">Баланс: 0.00000000 BTC</div>
-                        <button class="transfer-btn" onclick="document.querySelector('[data-section=transfer]').click()">Перевести</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <h2>Ethereum (ETH)</h2>
-                    <div id="eth-price" class="price">Загрузка...</div>
-                    <p id="eth-change" class="price-change">Изменение за 24ч: ...</p>
-                    <div class="balance-info">
-                        <div class="balance" id="eth-balance">Баланс: 0.00000000 ETH</div>
-                        <button class="transfer-btn" onclick="document.querySelector('[data-section=transfer]').click()">Перевести</button>
+                    <div class="card">
+                        <h2>Tether (USDT)</h2>
+                        <div id="usdt-price" class="price">1.00 $</div>
+                        <p id="usdt-change" class="price-change">Стабильная монета</p>
+                        <button class="transfer-btn" onclick="document.querySelector('[data-section=transfer]').click()">Купить USDT</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="charts" class="section">
-            <div class="charts-section">
-                <h2>Анализ рынка</h2>
-                <p class="charts-description">Графики изменения цен за последние 24 часа</p>
-                <div class="charts-grid">
-                    <div class="chart-container">
-                        <h3>Bitcoin (BTC)</h3>
-                        <canvas id="btcChart"></canvas>
-                    </div>
-
-                    <div class="chart-container">
-                        <h3>Ethereum (ETH)</h3>
-                        <canvas id="ethChart"></canvas>
+        <section id="cards" class="section">
+            <div class="cards-section">
+                <h2>Ваши банковские карты</h2>
+                <div class="bank-cards-grid" id="bank-cards-container">
+                    <div class="add-card-btn" onclick="document.getElementById('add-card-modal').style.display='flex'">
+                        <span>+</span>
+                        <p>Добавить карту</p>
                     </div>
                 </div>
             </div>
@@ -89,15 +63,17 @@
 
         <section id="transfer" class="section">
             <div class="transfer-card">
-                <h1>Перевод криптовалюты</h1>
+                <h1>Покупка криптовалюты</h1>
                 
                 <form id="transfer-form">
                     <div class="form-group">
-                        <label>Кошелек отправителя</label>
-                        <select id="source-wallet" required>
-                            <option value="metamask">MetaMask</option>
-                            <option value="tonkeeper">TonKeeper</option>
+                        <label>Банковская карта</label>
+                        <select id="card-select" required>
+                            <option value="" disabled selected>Выберите карту</option>
                         </select>
+                        <button type="button" class="add-card-link" onclick="document.getElementById('add-card-modal').style.display='flex'">
+                            + Добавить новую карту
+                        </button>
                     </div>
 
                     <div class="form-group">
@@ -105,17 +81,19 @@
                         <select id="crypto-select" required>
                             <option value="btc">Bitcoin (BTC)</option>
                             <option value="eth">Ethereum (ETH)</option>
+                            <option value="usdt">Tether (USDT)</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Сумма перевода</label>
-                        <input type="number" id="amount" step="0.00000001" min="0" required placeholder="0.00000000">
+                        <label>Сумма в рублях</label>
+                        <input type="number" id="amount" min="1000" required placeholder="Минимум 1000 ₽">
+                        <div class="crypto-amount" id="crypto-amount">Вы получите: 0.00000000 BTC</div>
                     </div>
 
                     <div class="button-group">
                         <button type="button" class="cancel-btn" onclick="document.querySelector('[data-section=main]').click()">Отмена</button>
-                        <button type="submit" class="transfer-btn">Перевести</button>
+                        <button type="submit" class="transfer-btn">Купить</button>
                     </div>
                 </form>
             </div>
@@ -156,6 +134,31 @@
     </div>
 
     <div id="notifications-container"></div>
+    <div id="add-card-modal" class="modal">
+        <div class="modal-content">
+            <h2>Добавление карты</h2>
+            <form id="add-card-form">
+                <div class="form-group">
+                    <label>Номер карты</label>
+                    <input type="text" id="card-number" required maxlength="19" placeholder="0000 0000 0000 0000">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Срок действия</label>
+                        <input type="text" id="card-expiry" required maxlength="5" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="password" id="card-cvv" required maxlength="3" placeholder="***">
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="cancel-btn" onclick="document.getElementById('add-card-modal').style.display='none'">Отмена</button>
+                    <button type="submit" class="transfer-btn">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <script src="js/main.js"></script>
 </body>
 </html>

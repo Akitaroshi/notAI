@@ -366,11 +366,145 @@ function handleTransferForm(e) {
 
 // Инициализация после загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
-    initializeCharts();
-    updateBalances();
+    const cards = [];
+    const cardSelect = document.getElementById('card-select');
+    const cryptoSelect = document.getElementById('crypto-select');
+    const amountInput = document.getElementById('amount');
+    const cryptoAmount = document.getElementById('crypto-amount');
+    const bankCardsContainer = document.getElementById('bank-cards-container');
+    const addCardForm = document.getElementById('add-card-form');
+    const cardNumberInput = document.getElementById('card-number');
+    const cardExpiryInput = document.getElementById('card-expiry');
 
-    // Добавляем обработчики событий
-    document.getElementById('transfer-form').addEventListener('submit', handleTransferForm);
+    function formatCardNumber(value) {
+        const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        const matches = v.match(/\d{4,16}/g);
+        const match = matches && matches[0] || '';
+        const parts = [];
+
+        for (let i = 0, len = match.length; i < len; i += 4) {
+            parts.push(match.substring(i, i + 4));
+        }
+
+        if (parts.length) {
+            return parts.join(' ');
+        } else {
+            return value;
+        }
+    }
+
+    function formatExpiry(value) {
+        const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        if (v.length >= 2) {
+            return v.slice(0, 2) + '/' + v.slice(2, 4);
+        }
+        return v;
+    }
+
+    cardNumberInput.addEventListener('input', (e) => {
+        e.target.value = formatCardNumber(e.target.value);
+    });
+
+    cardExpiryInput.addEventListener('input', (e) => {
+        e.target.value = formatExpiry(e.target.value);
+    });
+
+    function updateCryptoAmount() {
+        const amount = parseFloat(amountInput.value) || 0;
+        const crypto = cryptoSelect.value;
+        let rate;
+
+        switch(crypto) {
+            case 'btc':
+                rate = parseFloat(document.getElementById('btc-price').textContent.replace(/[^0-9.]/g, '')) || 0;
+                break;
+            case 'eth':
+                rate = parseFloat(document.getElementById('eth-price').textContent.replace(/[^0-9.]/g, '')) || 0;
+                break;
+            case 'usdt':
+                rate = 90;
+                break;
+        }
+
+        const cryptoValue = amount / (rate * 90);
+        cryptoAmount.textContent = `Вы получите: ${cryptoValue.toFixed(8)} ${crypto.toUpperCase()}`;
+    }
+
+    amountInput.addEventListener('input', updateCryptoAmount);
+    cryptoSelect.addEventListener('change', updateCryptoAmount);
+
+    function renderCards() {
+        const cardsHtml = cards.map(card => `
+            <div class="bank-card">
+                <div class="card-number">**** **** **** ${card.number.slice(-4)}</div>
+                <div class="card-expiry">${card.expiry}</div>
+            </div>
+        `).join('');
+
+        bankCardsContainer.innerHTML = `
+            ${cardsHtml}
+            <div class="add-card-btn" onclick="document.getElementById('add-card-modal').style.display='flex'">
+                <span>+</span>
+                <p>Добавить карту</p>
+            </div>
+        `;
+
+        cardSelect.innerHTML = `
+            <option value="" disabled ${cards.length === 0 ? 'selected' : ''}>Выберите карту</option>
+            ${cards.map((card, index) => `
+                <option value="${index}" ${index === 0 ? 'selected' : ''}>
+                    **** ${card.number.slice(-4)}
+                </option>
+            `).join('')}
+        `;
+    }
+
+    addCardForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const cardNumber = cardNumberInput.value.replace(/\s+/g, '');
+        const cardExpiry = cardExpiryInput.value;
+
+        if (cardNumber.length !== 16) {
+            showNotification('Ошибка', 'Введите корректный номер карты', 'error');
+            return;
+        }
+
+        if (!/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+            showNotification('Ошибка', 'Введите корректный срок действия карты', 'error');
+            return;
+        }
+
+        cards.push({
+            number: cardNumber,
+            expiry: cardExpiry
+        });
+
+        renderCards();
+        showNotification('Успешно', 'Карта успешно добавлена');
+        addCardForm.reset();
+        document.getElementById('add-card-modal').style.display = 'none';
+    });
+
+    document.getElementById('transfer-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const amount = parseFloat(amountInput.value);
+        const crypto = cryptoSelect.value;
+        const selectedCard = cardSelect.value;
+
+        if (!selectedCard) {
+            showNotification('Ошибка', 'Выберите карту', 'error');
+            return;
+        }
+
+        if (amount < 1000) {
+            showNotification('Ошибка', 'Минимальная сумма - 1000 ₽', 'error');
+            return;
+        }
+
+        showNotification('Успешно', `Покупка ${crypto.toUpperCase()} успешно выполнена`);
+        e.target.reset();
+        document.querySelector('[data-section=main]').click();
+    });
 
     // Обработка кастомного выпадающего меню
     document.querySelectorAll('.select-wrapper').forEach(wrapper => {
@@ -420,4 +554,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+
+    initializeCharts();
+    updateBalances();
 });
